@@ -8,14 +8,15 @@ int main(void){
     int numPrisoners {};
     numPrisoners = GetNumPrisoners(); //also 
 
-    std::vector<PrisonBox> prisonCell(numPrisoners);
+    std::vector<PrisonBox> prisonList(numPrisoners);
+    std::vector<int> prisonTags(numPrisoners);
 
-    PrisonMethods::PrintAllPrisoners(prisonCell);
-    PrisonMethods::PopulateVectorAscending(prisonCell);
-    PrisonMethods::PrintAllPrisoners(prisonCell);
+    PrisonMethods::GeneratePrisonTags(prisonTags, numPrisoners);
+    PrisonMethods::ShufflePrisonTagVector(prisonTags);
+    PrisonMethods::PopulatePrisonBoxes(prisonList, prisonTags);
     
-    std::unordered_set<int> mySet;
-
+ 
+    PrisonMethods::PrintAllPrisoners(prisonList);
     
     return 0;
 }
