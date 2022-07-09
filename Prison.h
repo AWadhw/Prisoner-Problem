@@ -1,8 +1,12 @@
+#pragma once
+
 #include <cstdlib>
 #include <algorithm>
 #include <random>
 #include <cstdlib>
 #include <ctime>
+#include <unordered_map>
+
 int FetchRandomNumber(void){
     return (static_cast<float>(rand())/RAND_MAX) * 10;
 }
@@ -22,9 +26,28 @@ class PrisonBox{
         bool Opened;
 };
 
+class CellMethods{
+    public:
+        static void PrintAllPrisoners(std::unordered_map<int, int> &myMap);
+        static void PopulatePrisonMap(std::unordered_map<int, int> &myMap, const std::vector<int> &prisonVector, const int numPrisoners);
+};
+
+void CellMethods::PrintAllPrisoners(std::unordered_map<int, int> &prisonLayout){
+       for(auto i : prisonLayout){
+        std::cout << i.first << " and " << i.second << std::endl;
+    }
+}
+
+void CellMethods::PopulatePrisonMap(std::unordered_map<int, int> &myMap, const std::vector<int> &prisonVector, const int numPrisoners){
+    for(int i = 1; i <= numPrisoners; i++){
+        myMap[i] = prisonVector.at(i-1);
+    }
+}
+
 class PrisonMethods{
     public: 
         static void PrintAllPrisoners(std::vector<PrisonBox> &prisonList);
+        static void PrintPrisonVector(std::vector<int> &prisonVector);
         static void GeneratePrisonTags(std::vector<int> &prisonTags, const int numPrisoners);
         static void PopulatePrisonBoxes(std::vector<PrisonBox> &prisonList, std::vector<int> &prisonTags);
         static void PopulateVectorAscending(std::vector<PrisonBox> &prisonList);
@@ -38,6 +61,12 @@ void PrisonMethods::PrintAllPrisoners(std::vector<PrisonBox> &prisonList){
     std::cout << std::endl;
     for(auto i : prisonList){
         std::cout << i.Box << " and " << i.Tag << " and " << i.Opened << std::endl;
+    }
+}
+
+void PrisonMethods::PrintPrisonVector(std::vector<int> &prisonVector){
+    for(int i : prisonVector){
+        std::cout << i << std::endl;
     }
 }
 
@@ -56,24 +85,6 @@ void PrisonMethods::PopulatePrisonBoxes(std::vector<PrisonBox> &prisonList, std:
     }
 }
 
-void PrisonMethods::PopulateVectorAscending(std::vector<PrisonBox> &prisonList){
-    int j = 1;
-    for(auto& i : prisonList){
-        i.Tag = j;
-        i.Box = j;
-        j++;
-    }
-}
-// void PrisonMethods::PopulatePrisonSet(std::unordered_set<int> &prisonSet, const int &NumPrisoners){
-//     for(int i = 0; i < NumPrisoners; i++){
-//         prisonSet.insert(i);
-//     }
-// }
-// void PrisonMethods::PrintPrisonSet(std::unordered_set<int> &prisonSet){
-//     for(int i : prisonSet){
-//         std::cout << i << std::endl;
-//     }
-// }
 void PrisonMethods::ShufflePrisonTagVector(std::vector<int> &prisonTags){
     //auto rng = std::default_random_engine {}; //for creating a seed for the shuffle algorithm
     srand(time(0)); //for creating a seed for the shuffle algorithm
