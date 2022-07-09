@@ -1,7 +1,8 @@
 #include <cstdlib>
 #include <algorithm>
 #include <random>
-
+#include <cstdlib>
+#include <ctime>
 int FetchRandomNumber(void){
     return (static_cast<float>(rand())/RAND_MAX) * 10;
 }
@@ -13,10 +14,12 @@ int GetNumPrisoners(void){
     std::cout << "\n" << numPrisoners << " Selected";
     return numPrisoners;
 }
+
 class PrisonBox{
     public: 
         int Box;
         int Tag;
+        bool Opened;
 };
 
 class PrisonMethods{
@@ -34,7 +37,7 @@ class PrisonMethods{
 void PrisonMethods::PrintAllPrisoners(std::vector<PrisonBox> &prisonList){
     std::cout << std::endl;
     for(auto i : prisonList){
-        std::cout << i.Box << " and " << i.Tag << std::endl;
+        std::cout << i.Box << " and " << i.Tag << " and " << i.Opened << std::endl;
     }
 }
 
@@ -61,18 +64,21 @@ void PrisonMethods::PopulateVectorAscending(std::vector<PrisonBox> &prisonList){
         j++;
     }
 }
-void PrisonMethods::PopulatePrisonSet(std::unordered_set<int> &prisonSet, const int &NumPrisoners){
-    for(int i = 0; i < NumPrisoners; i++){
-        prisonSet.insert(i);
-    }
-}
-void PrisonMethods::PrintPrisonSet(std::unordered_set<int> &prisonSet){
-    for(int i : prisonSet){
-        std::cout << i << std::endl;
-    }
-}
+// void PrisonMethods::PopulatePrisonSet(std::unordered_set<int> &prisonSet, const int &NumPrisoners){
+//     for(int i = 0; i < NumPrisoners; i++){
+//         prisonSet.insert(i);
+//     }
+// }
+// void PrisonMethods::PrintPrisonSet(std::unordered_set<int> &prisonSet){
+//     for(int i : prisonSet){
+//         std::cout << i << std::endl;
+//     }
+// }
 void PrisonMethods::ShufflePrisonTagVector(std::vector<int> &prisonTags){
-    auto rng = std::default_random_engine {}; //for creating a seed for the shuffle algorithm
+    //auto rng = std::default_random_engine {}; //for creating a seed for the shuffle algorithm
+    srand(time(0)); //for creating a seed for the shuffle algorithm
+    unsigned int seed = rand(); //for creating a seed for the shuffle algorithm
+    auto rng = std::default_random_engine(seed);
     std::shuffle(std::begin(prisonTags), std::end(prisonTags), rng);
 }
 
