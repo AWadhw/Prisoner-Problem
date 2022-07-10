@@ -1,33 +1,30 @@
 #pragma once
-//#include <unordered_map>
 
 class TagSearchMethods{
     public: 
-        static int RandomTagSearchPerPrisoner(const int numTries, std::unordered_map<int, int> &myMap,std::vector<int> prisonTags, const int prisonerID);
-        static int FullRandomTagSearch(int numPrisoners, const int numTries, std::unordered_map<int, int> &myMap, std::vector<int> prisonTags);
+        static int RandomTagSearchPerPrisoner(const int numTries, std::unordered_map<int, int> &myMap,std::vector<int> searchSequence, const int prisonerID);
+        static int FullRandomTagSearch(const int numPrisoners, const int numTries, std::unordered_map<int, int> &myMap, std::vector<int> searchSequence);
         static int OrganizedTagSearchPerPrisoner(const int numTries, std::unordered_map<int, int> &myMap, const int prisonerID);
+        static int TagSearchMethodsFullOrganizedSearch(const int numPrisoners, const int numTries, std::unordered_map<int, int> &myMap);
 };
 
 //COME BACK TO THIS LOL 
-int TagSearchMethods::RandomTagSearchPerPrisoner(const int numTries, std::unordered_map<int, int> &myMap, std::vector<int> prisonTags, const int prisonerID){
+int TagSearchMethods::RandomTagSearchPerPrisoner(const int numTries, std::unordered_map<int, int> &myMap, std::vector<int> searchSequence, const int prisonerID){
 
-    PrisonMethods::ShufflePrisonTagVector(prisonTags); //shiffling a random sequence of picking every time. 
+    PrisonMethods::ShufflePrisonTagVector(searchSequence); //shiffling a random sequence of picking every time. 
 
     for(int i = 0; i < numTries; i++){
-        if(myMap[prisonTags.at(i)] == prisonerID){
+        if(myMap[searchSequence.at(i)] == prisonerID){
             return 1;
         }
-        // if(prisonTags.size() == numTries - 1){
-        //     return 0;
-        // }
     }
     return 0;
 }
 
-int TagSearchMethods::FullRandomTagSearch(int numPrisoners, const int numTries, std::unordered_map<int, int> &myMap, std::vector<int> prisonTags){
+int TagSearchMethods::FullRandomTagSearch(const int numPrisoners, const int numTries, std::unordered_map<int, int> &myMap, std::vector<int> searchSequence){
     int successfulSearch{1};
     for(int i = 0; i < numPrisoners; i++){
-        successfulSearch = TagSearchMethods::RandomTagSearchPerPrisoner(numTries, myMap, prisonTags, i+1);
+        successfulSearch = TagSearchMethods::RandomTagSearchPerPrisoner(numTries, myMap, searchSequence, i+1);
         if(successfulSearch != 1){
             return 0;
         }
@@ -37,6 +34,7 @@ int TagSearchMethods::FullRandomTagSearch(int numPrisoners, const int numTries, 
 
 int TagSearchMethods::OrganizedTagSearchPerPrisoner(const int numTries, std::unordered_map<int, int> &myMap, const int prisonerID){
 
+    std::vector<int> mySanity {};
     if(myMap[prisonerID] == prisonerID){ //already using a single try here
         return 1;
     }
@@ -47,11 +45,13 @@ int TagSearchMethods::OrganizedTagSearchPerPrisoner(const int numTries, std::uno
             return 1;
         }
         startSeed = myMap[startSeed];
+        mySanity.push_back(startSeed);
     }
+    
     return 0;
 }
 
-int TagSearchMethodsFullOrganizedSearch(const int numPrisoners, const int numTries, std::unordered_map<int, int> &myMap){
+int TagSearchMethods::TagSearchMethodsFullOrganizedSearch(const int numPrisoners, const int numTries, std::unordered_map<int, int> &myMap){
     int successfulSearch {1};
     for(int i = 0; i < numPrisoners; i++){
         successfulSearch = TagSearchMethods::OrganizedTagSearchPerPrisoner(numTries, myMap, i+1);
@@ -61,5 +61,6 @@ int TagSearchMethodsFullOrganizedSearch(const int numPrisoners, const int numTri
     }
     return successfulSearch;
 }
+
 
 

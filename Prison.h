@@ -86,7 +86,6 @@ void PrisonMethods::PopulatePrisonBoxes(std::vector<PrisonBox> &prisonList, std:
 }
 
 void PrisonMethods::ShufflePrisonTagVector(std::vector<int> &prisonTags){
-    //auto rng = std::default_random_engine {}; //for creating a seed for the shuffle algorithm
     srand(time(0)); //for creating a seed for the shuffle algorithm
     unsigned int seed = rand(); //for creating a seed for the shuffle algorithm
     auto rng = std::default_random_engine(seed);
