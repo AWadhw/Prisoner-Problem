@@ -19,30 +19,33 @@ int main(void){
     PrisonMethods::PrintPrisonVector(prisonTags);
 
     //myHashTable
-    std::cout << "Map Stuff!!!";
+    std::cout << "Generating prison map!";
     std::unordered_map<int, int> prisonLayout;
     CellMethods::PrintAllPrisoners(prisonLayout);
     CellMethods::PopulatePrisonMap(prisonLayout, prisonTags, numPrisoners);
     CellMethods::PrintAllPrisoners(prisonLayout);
 
-    //TagSearchMethods::RandomTagSearch(prisonList, prisonTags);
 
     //////////////////////////START RUN///////////////////////////////////
-    double samples {6000000}; //remember to convert this to an int later 
-    //int run = TagSearchMethods::TagSearchMethodsFullOrganizedSearch(numPrisoners, NUM_TRIES, prisonLayout);
-    double sum {0};
+    long double samples {10000};  
+    long double sum {0};
     for(int i = 0; i < samples; i++){
         sum += TagSearchMethods::TagSearchMethodsFullOrganizedSearch(numPrisoners, NUM_TRIES, prisonLayout);
         PrisonMethods::ShufflePrisonTagVector(prisonTags); //shuffling
         CellMethods::PopulatePrisonMap(prisonLayout, prisonTags, numPrisoners);
     }
-    // for(int i = 0; i < samples; i++){
-    //     sum += TagSearchMethods::FullRandomTagSearch(numPrisoners, NUM_TRIES, prisonLayout, prisonTags); //being lazy here by seeding with the random tag sequence. (it doesn't matter as it will shuffle again)
-    //     PrisonMethods::ShufflePrisonTagVector(prisonTags); //shuffling
-    //     CellMethods::PopulatePrisonMap(prisonLayout, prisonTags, numPrisoners);
-    // }
 
-    std::cout << "\n ANDDDDD YOUR AVERAGE ISSSSSSS!!!!!!!!!!!!!" << std::endl;
+    std::cout << "\n And your average probability with organized search for success is: " << std::endl;
+    std::cout << (sum/samples) << std::endl;
+    sum = 0;
+
+    for(int i = 0; i < samples; i++){
+        sum += TagSearchMethods::FullRandomTagSearch(numPrisoners, NUM_TRIES, prisonLayout, prisonTags); //using prison layout to seed a seach sequence
+        PrisonMethods::ShufflePrisonTagVector(prisonTags); //shuffling
+        CellMethods::PopulatePrisonMap(prisonLayout, prisonTags, numPrisoners);
+    }
+
+    std::cout << "\n And your average probability with full random for success is: " << std::endl;
     std::cout << (sum/samples) << std::endl;
     
     return 0;

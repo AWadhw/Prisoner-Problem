@@ -11,7 +11,7 @@ class TagSearchMethods{
 //COME BACK TO THIS LOL 
 int TagSearchMethods::RandomTagSearchPerPrisoner(const int numTries, std::unordered_map<int, int> &myMap, std::vector<int> searchSequence, const int prisonerID){
 
-    PrisonMethods::ShufflePrisonTagVector(searchSequence); //shiffling a random sequence of picking every time. 
+    PrisonMethods::ShufflePrisonTagVector(searchSequence); //shuffling a random sequence of picking every time. 
 
     for(int i = 0; i < numTries; i++){
         if(myMap[searchSequence.at(i)] == prisonerID){
